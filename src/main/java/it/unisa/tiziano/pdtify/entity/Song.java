@@ -21,12 +21,22 @@ public class Song {
         this.authors = authors;
         this.name = name;
         this.url = url;
+        this.views = 0;
+    }
+
+    public void addSingleView() {
+        this.views += 1;
     }
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID ID;
+
     private String authors;
+
     private String name;
+
     private URL url;
+
+    private int views;
 }
