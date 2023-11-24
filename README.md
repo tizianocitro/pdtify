@@ -5,7 +5,7 @@ all'Università degli Studi di Salerno.
 
 ## Setup progetto
 Scaricare il file [pdtify.zip](https://github.com/tizianocitro/pdtify/blob/main/pdtify.zip) oppure
-creare un nuovo progetto tramite [Spring Initializer](https://start.spring.io/) come nell'immagine seguente:
+creare un nuovo progetto tramite [Spring Initializer](https://start.spring.io/), come nell'immagine seguente:
 
 ![Project setup in Spring Initializer](https://github.com/tizianocitro/pdtify/blob/main/assets/SpringInitializer.png)
 
@@ -14,7 +14,8 @@ creare un nuovo progetto tramite [Spring Initializer](https://start.spring.io/) 
 ## Configurare l'applicazione
 
 ### File pom.xml
-Aggiungere nel file `pom.xml` le dipendenze per `Lombok` e il connector per `MySQL`, usato come database.
+Aggiungere nel file `pom.xml` le dipendenze per `Lombok` e
+il connector per `MySQL`, usato come database.
 ```xml
 <dependency>
     <groupId>mysql</groupId>
@@ -100,17 +101,17 @@ mvn spring-boot:run
 ```
 E accedere all'applicazione alla URL [http://localhost:8080](http://localhost:8080).
 
-Non abbiamo ancora pagine da visualizzare ma possiamo vedere nella console il log dello `StartupRunner`.
+Non ci sono ancora pagine da visualizzare ma è possibile vedere nella console il log dello `StartupRunner`.
 
 ![Startup Runner Log](https://github.com/tizianocitro/pdtify/blob/main/assets/StartupRunner.png)
 
 ## Aggiungere lo strato di persistenza
-Per gestire la persistenza dell'applicazione dovremo aggiungere l'entità per le canzoni (`Song`)
+Per gestire la persistenza dell'applicazione bisognerà aggiungere l'entità per le canzoni (`Song`)
 e una repository per interagire con il database.
 
 ### Aggiungere l'entità
 Creare un package `entity` nel package `it.unisa.tiziano.pdtify`.
-Nel package `entity`, creare un file `Song.java` per la classe `Song` che modella una canzone nel database.
+Nel package `entity`, creare un file `Song.java` per la classe `Song` che modellerà una canzone nel database.
 
 Aggiungere gli import necessari.
 ```java
@@ -128,10 +129,10 @@ import java.util.UUID;
 
 Aggiungere i campi della classe che modellano la canzone. L'annotazione `@Entity` definisce una classe
 come un'entità che verrà gestita dallo strato di persistenza di Spring Data JPA. L'annotazione
-`@Id` definisce che la chiave primaria è il campo `ID` di tipo UUID, che sarà generato
-automaticamente al momento di salvare una nuova entità, come specificato dall'annotazione `@GeneratedValue`.
+`@Id` definisce il campo `ID` di tipo UUID come chiave primaria. L'ID sarà generato
+automaticamente al momento del salvataggio di una nuova entità, come specificato dall'annotazione `@GeneratedValue`.
 
-Le annotazioni `@NoArgsConstructor`, `@Getter` e `@Setter` sono fornite da Lombok e permettono
+Le annotazioni `@NoArgsConstructor`, `@Getter` e `@Setter` sono fornite da `Lombok` e permettono
 l'autogenerazione di un costruttore senza argomenti e dei metodi getter e setter per i campi dell'entità.
 
 ```java
@@ -165,9 +166,9 @@ public class Song {
 ### Aggiungere la repository
 Creare un package `repository` nel package `it.unisa.tiziano.pdtify`.
 Nel package `repository`, creare un file `SongRepository.java` per l'interfaccia `SongRepository`
-che fornisce un'astrazione per interagire con le entità istanze della classe `Song`.
+che fornirà un'astrazione per interagire con le entità istanze della classe `Song`.
 
-Aggiungere gli import necesari.
+Aggiungere gli import necessari.
 ```java
 import it.unisa.tiziano.pdtify.entity.Song;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -176,9 +177,10 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 ```
 
-Sviluppare l'interfaccia e l'application container di Spring creerà automaticamente un bean
+Creare l'interfaccia e l'application container di Spring creerà automaticamente un bean
 con una serie di metodi per interagire con le entità, ad esempio `save()`, `findById()` e così via.
-Definire anche due metodi custom non definiti di base dal'astrazione
+
+Definire anche due metodi custom `findByName()` e `existsByName()` non definiti di base dall'astrazione
 ma che verranno generati automaticamente nel bean creato,
 per il solo fatto di essere definiti nell'interfaccia.
 ```Java
@@ -191,9 +193,9 @@ public interface SongRepository extends JpaRepository<Song, UUID> {
 }
 ```
 
-### Popolare il databse allo startup dell'applicazione
+### Popolare il database allo startup dell'applicazione
 Nel package `config`, creare un file `DatabasePopulator.java` per la classe `DatabasePopulator`
-che allo startup dell'applicazione salva due canzoni nel database.
+che allo startup dell'applicazione salverà due canzoni nel database.
 
 Aggiungere gli import necessari.
 ```java
@@ -207,10 +209,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 ```
 
-Iniettare la repository all'interno della classe `DatabasePopulator` per interagire con il database.
+Iniettare la repository `SongRepository` all'interno della classe `DatabasePopulator` per interagire con il database.
 L'annotazione `@Autowired` definisce che i parametri del costruttore sono da fornire tramite
-`dependency injection`. Quando il bean `DatabasePopulator` viene creato, l'application container assicura
-che il bean della `SongRepository` sia già stato creato e che venga fornito al `DatabasePopulator`.
+`dependency injection`. Quando il bean `DatabasePopulator` verrà creato, l'application container assicurerà
+che il bean `SongRepository` sia già stato creato e che sia fornito al bean `DatabasePopulator`.
 ```java
 @Component
 public class DatabasePopulator {
@@ -225,7 +227,6 @@ public class DatabasePopulator {
 ```
 
 Aggiungiamo il metodo che si occuperà di salvare le canzoni nel database.
-
 L'annotazione `@PostConstruct` segnala all'application container che il metodo `populate()`
 dovrà essere eseguito subito dopo lo startup dell'applicazione.
 ```java
