@@ -3,6 +3,20 @@ Progetto in Spring Boot per la gestione di una playlist utilizzando come player 
 le API di Youtube Embedded nell'ambito del corso di Programmazione Distribuita 
 dell'Università degli Studi di Salerno.
 
+## Screenshot dell'applicazione
+### Pagina Home
+![Home](https://github.com/tizianocitro/pdtify/blob/main/assets/Home.png)
+
+L'applicazione è anche responsive, anche se non in maniera impeccabile.
+
+![Home mobile](https://github.com/tizianocitro/pdtify/blob/main/assets/HomeMobile.png)
+
+### Pagina per il `play` delle canzoni
+![Play song](https://github.com/tizianocitro/pdtify/blob/main/assets/PlaySong.png)
+
+### Pagina per l'aggiunta di una nuova canzone
+![Add song](https://github.com/tizianocitro/pdtify/blob/main/assets/AddSong.png)
+
 ## Setup progetto
 Scaricare il file [pdtify.zip](https://github.com/tizianocitro/pdtify/blob/main/pdtify.zip) oppure
 creare un nuovo progetto tramite [Spring Initializer](https://start.spring.io/), come nell'immagine seguente:
