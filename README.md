@@ -656,6 +656,7 @@ Assicurarsi che il database sia raggiungibile e avviare l'applicazione da termin
 ```bash
 mvn spring-boot:run
 ```
+
 E controllare che cliccando `Add` nella navbar della pagina Home,
 venga visualizzata la pagina con il form per l'aggiunta di una nuova canzone.
 
@@ -673,12 +674,11 @@ Provare ad aggiungere la canzone seguente:
 
 E controllare che nella pagina Home appaia la canzone appena aggiunta.
 
-## Aggiungiamo il conteggio del numero di visualizzazioni delle canzoni
-Implementeremo un filtro che intercetta le richieste all'endpoint `/play` per incrementare
+## Aggiungere il conteggio del numero di visualizzazioni delle canzoni
+Implementare un filtro che intercetti le richieste all'endpoint con request path `/play` per incrementare
 le visualizzazioni della canzone riprodotta.
 
-Estendere la classe `Song.java` per aggiungere un metodoc he permetta di incrementare 
-il campo `views` di 1.
+Estendere la classe `Song.java` per aggiungere un metodo che permetta di incrementare il campo `views` di 1.
 
 ```java
 public void addSingleView() {
@@ -686,12 +686,15 @@ public void addSingleView() {
 }
 ```
 
-Aggiungiamo un nuovo metodo anche al'interfaccia `SongService.java` e lo implementiamo
-nella classe `SongServiceImpl.java`.
+Aggiungere un nuovo metodo anche all'interfaccia `SongService.java` da implementare nella classe `SongServiceImpl.java`.
+
+Nell'interfaccia `SongService`:
 
 ```java
 void updateSongViewsByName(String name);
 ```
+
+Nella classe `SongServiceImpl`:
 
 ```java
 @Override
@@ -702,10 +705,11 @@ public void updateSongViewsByName(String name) {
 }
 ```
 
-Aggiungiamo quindi il filtro nel package `service` creando un file `SongViewsFilter.java` per la classe
-`SongViewsFilter`, che implementerà l'interfaccia `OncePerRequestFilter`.
+Aggiungere quindi il filtro nel package `service` creando un file `SongViewsFilter.java` per la classe
+`SongViewsFilter`, che estenderà la classe `OncePerRequestFilter`.
 
 Aggiungiamo gli import necessari.
+
 ```java
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -719,7 +723,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 ```
 
-E implementiamo i metodi definiti da `OncePerRequestFilter`.
+E fare l'`ovverride` dei metodi forniti da `OncePerRequestFilter`.
+
 ```java
 @Slf4j
 @Component
@@ -750,6 +755,7 @@ public class SongViewsFilter extends OncePerRequestFilter {
 
 ### Avviare l'applicazione
 Assicurarsi che il database sia raggiungibile e avviare l'applicazione da terminale con il comando:
+
 ```bash
 mvn spring-boot:run
 ```
