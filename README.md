@@ -1,7 +1,7 @@
 # PDtify
 Progetto in Spring Boot per la gestione di una playlist utilizzando come player di riproduzione
 le API di Youtube Embedded nell'ambito del corso di Programmazione Distribuita 
-all'Università degli Studi di Salerno.
+dell'Università degli Studi di Salerno.
 
 ## Setup progetto
 Scaricare il file [pdtify.zip](https://github.com/tizianocitro/pdtify/blob/main/pdtify.zip) oppure
@@ -16,6 +16,7 @@ creare un nuovo progetto tramite [Spring Initializer](https://start.spring.io/),
 ### File pom.xml
 Aggiungere nel file `pom.xml` le dipendenze per `Lombok` e
 il connector per `MySQL`, usato come database.
+
 ```xml
 <dependency>
     <groupId>mysql</groupId>
@@ -67,6 +68,7 @@ verrà eseguito durante la fase di startup dell'applicazione e semplicemente agg
 nella console con la URL per l'accesso all'applicazione.
 
 Aggiungere gli import necessari.
+
 ```java
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
@@ -96,6 +98,7 @@ della classe `StartupRunner`.
 
 ### Avviare l'applicazione
 Assicurarsi che il database sia raggiungibile e avviare l'applicazione da terminale con il comando:
+
 ```bash
 mvn spring-boot:run
 ```
@@ -114,6 +117,7 @@ Creare un package `entity` nel package `it.unisa.tiziano.pdtify`.
 Nel package `entity`, creare un file `Song.java` per la classe `Song` che modellerà una canzone nel database.
 
 Aggiungere gli import necessari.
+
 ```java
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -169,6 +173,7 @@ Nel package `repository`, creare un file `SongRepository.java` per l'interfaccia
 che fornirà un'astrazione per interagire con le entità istanze della classe `Song`.
 
 Aggiungere gli import necessari.
+
 ```java
 import it.unisa.tiziano.pdtify.entity.Song;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -183,6 +188,7 @@ con una serie di metodi per interagire con le entità, ad esempio `save()`, `fin
 Definire anche due metodi custom `findByName()` e `existsByName()` non definiti di base dall'astrazione
 ma che verranno generati automaticamente nel bean creato,
 per il solo fatto di essere definiti nell'interfaccia.
+
 ```Java
 @Repository
 public interface SongRepository extends JpaRepository<Song, UUID> {
@@ -198,6 +204,7 @@ Nel package `config`, creare un file `DatabasePopulator.java` per la classe `Dat
 che allo startup dell'applicazione salverà due canzoni nel database.
 
 Aggiungere gli import necessari.
+
 ```java
 import it.unisa.tiziano.pdtify.entity.Song;
 import it.unisa.tiziano.pdtify.repository.SongRepository;
@@ -213,6 +220,7 @@ Iniettare la repository `SongRepository` all'interno della classe `DatabasePopul
 L'annotazione `@Autowired` definisce che i parametri del costruttore sono da fornire tramite
 `dependency injection`. Quando il bean `DatabasePopulator` verrà creato, l'application container assicurerà
 che il bean `SongRepository` sia già stato creato e che sia fornito al bean `DatabasePopulator`.
+
 ```java
 @Component
 public class DatabasePopulator {
@@ -229,6 +237,7 @@ public class DatabasePopulator {
 Aggiungiamo il metodo che si occuperà di salvare le canzoni nel database.
 L'annotazione `@PostConstruct` segnala all'application container che il metodo `populate()`
 dovrà essere eseguito subito dopo lo startup dell'applicazione.
+
 ```java
 @PostConstruct
 public void populate() {
@@ -256,19 +265,19 @@ public void populate() {
 
 ### Avviare l'applicazione
 Assicurarsi che il database sia raggiungibile e avviare l'applicazione da terminale con il comando:
+
 ```bash
 mvn spring-boot:run
 ```
 E controllare che le due canzoni siano state salvate nel database.
 
 ## Aggiungere la logica di business
-Aggiungiamo un'interfacca che fornirà tutti i metodi da implementare
-perché necessari alla logica di business della nostra applicazione.
+Creare un'interfaccia che fornirà tutti i metodi da implementare che sono necessari alla logica di business dell'applicazione.
 
 Creare un package `service` nel package `it.unisa.tiziano.pdtify`.
 Nel package `service`, creare un file `SongService.java` per l'interfaccia `SongService`
 che fornisce un'astrazione per interagire con i servizi che poi la implementeranno
-e che useremo per la dependency injection.
+e da usare per la dependency injection.
 
 ```java
 import it.unisa.tiziano.pdtify.entity.Song;
@@ -289,6 +298,7 @@ A questo punto, creare un file `SongServiceImp.java` per la classe che implement
 l'interfaccia `SongService.java`.
 
 Aggiungiamo gli import necessari.
+
 ```java
 import it.unisa.tiziano.pdtify.entity.Song;
 import it.unisa.tiziano.pdtify.repository.SongRepository;
@@ -299,8 +309,10 @@ import java.util.List;
 ```
 
 La classe `SongServiceImp` dovrà implementare l'interfaccia `SongService`
-e fornire un'implementazione per i metodi definiti.
-Forniamo inoltre la repository per interagire con il database.
+e fornire un'implementazione per i metodi definiti. l'annotazione `@Service` si comporta allo stesso
+modo dell'annotazione `@Component`.
+
+Il servizio riceverà inoltre, tramite dependency injection, la repository per interagire con il database.
 
 ```java
 @Service
@@ -330,13 +342,13 @@ public class SongServiceImpl implements SongService {
 }
 ```
 
-## Aggiungere la visualizzazione
+## Aggiungere la visualizzazione di pagine
 Creare un package `controller` nel package `it.unisa.tiziano.pdtify`.
 Nel package `controller`, creare un file `SongController.java` per la classe `SongController`, che
-sarà responsabile di ricevere le richieste, eseguire della logica e reinderizzare l'utente
-ad una visualizzazioen dedicata.
+sarà responsabile di ricevere le richieste, eseguire della logica e reindirizzare l'utente a una pagina dedicata.
 
 Aggiungere gli import necessary.
+
 ```java
 import it.unisa.tiziano.pdtify.entity.Song;
 import it.unisa.tiziano.pdtify.service.SongService;
@@ -352,7 +364,7 @@ import java.util.List;
 ```
 
 Usare l'annotazione `@Controller` per specificare che la classe si occuperà di ricevere le richieste
-ricevute dall'applicazione e fornire in risposta le opportune visualizzazioni.
+ricevute dall'applicazione e fornire in risposta le opportune pagine.
 
 Il controller userà il servizio implementato per eseguire logica di business tra la ricezione della
 richiesta e l'invio della visualizzazione in risposta.
@@ -370,13 +382,13 @@ public class SongController {
 }
 ```
 
-## Aggiungere la pagina Home
-Aggiungere la prima visualizzazione, che sarà la pagina `Home`. Creare la directory `templates`
+### Aggiungere la pagina Home
+Aggiungere la prima pagina, che sarà la pagina `Home`. Creare la directory `templates`
 (se non già presente) nella directory `src/main/resources` e creare un file `home.html` per la componente
 seguente.
 
-La visualizzazione utilizza uan variabile `songs` contente le canzoni da visualizzare e che
-sarà fornita dall'endpoint che la fornisce al client.
+La pagina utilizza una variabile `songs` contenente le canzoni da visualizzare e che
+sarà fornita dall'endpoint del `SongController` che la fornisce al client.
 
 ```html
 <!DOCTYPE html>
@@ -426,7 +438,7 @@ sarà fornita dall'endpoint che la fornisce al client.
 </html>
 ```
 
-Aggiungiamo lo stile usando [Bootstrap](https://getbootstrap.com/) tramite CDN:
+Lo stile è aggiunto usando [Bootstrap](https://getbootstrap.com/) tramite CDN:
 
 ```html
 <link
@@ -436,12 +448,11 @@ Aggiungiamo lo stile usando [Bootstrap](https://getbootstrap.com/) tramite CDN:
     crossorigin="anonymous">
 ```
 
-Aggiungiamo ora l'endpoint nel controller che fornirà la visualizzazione all'utente.
-L'annotazione `GetMapping` indica che l'endpoint risponderà
-alle richieste GET all'URL [http://localhost:8080](http://localhost:8080).
+Aggiungere ora l'endpoint nel controller `SongContoller` che fornirà la pagina all'utente.
+L'annotazione `GetMapping` indica che l'endpoint risponderà alle richieste GET alla URL [http://localhost:8080](http://localhost:8080).
 
 Il parametro `model` è iniettato dall'application container e permette
-di fornire dati alla visualizzazione, in questo caso le canzoni nella variabile `songs`.
+di fornire dati alla pagina, in questo caso le canzoni nella variabile `songs`.
 
 ```java
 @GetMapping("")
@@ -457,8 +468,7 @@ Assicurarsi che il database sia raggiungibile e avviare l'applicazione da termin
 ```bash
 mvn spring-boot:run
 ```
-E controllare che digitando [http://localhost:8080](http://localhost:8080) nel browser, venga visualizzata
-la Home.
+E controllare che alla URL [http://localhost:8080](http://localhost:8080) venga visualizzata la pagina Home.
 
 ## Aggiungere la pagina per la visualizzazione delle canzoni
 La pagina Home permette di fare il play delle canzoni, per implementare questa funzionalità,
