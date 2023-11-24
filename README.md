@@ -14,8 +14,7 @@ creare un nuovo progetto tramite [Spring Initializer](https://start.spring.io/) 
 ## Configurare l'applicazione
 
 ### File pom.xml
-Aggiungere nel file `pom.xml` le dipendenze per `Lombok` e il connector per `mysql`, usato come database.
-
+Aggiungere nel file `pom.xml` le dipendenze per `Lombok` e il connector per `MySQL`, usato come database.
 ```xml
 <dependency>
     <groupId>mysql</groupId>
@@ -38,8 +37,7 @@ nel file `application.properties` nella directory `src/main/resources`.
 # La porta di ascolto per le chiamate in arrivo
 server.port = 8080
 
-# Livello di logging che specifica la tipologia di informazioni
-# visualizzate nella console durante l'esecuzione 
+# Livello di logging che indica il dettaglio delle informazioni visualizzate nella console durante l'esecuzione 
 logging.level.root = INFO
 
 # Configurazioni specifiche per il database utilizzato
@@ -51,19 +49,21 @@ spring.datasource.driverClassName = com.mysql.cj.jdbc.Driver
 spring.jpa.show-sql = true
 ```
 
-Non è importante coem il database è in esecuzione, l'importante è che sia un database `mysql`
-e configurare opportunamente le proprietà `spring.datasource.url `,
+Non è importante come il database sia in esecuzione, l'importante è che sia un database `MySQL`
+e che si configurino opportunamente le proprietà `spring.datasource.url `,
 `spring.datasource.username` e `spring.datasource.password`. 
 
-Nel caso il database non fosse `mysql`, cambiare anche la proprietà `spring.datasource.driverClassName`,
+Nel caso il database non fosse `MySQL`, cambiare anche la proprietà `spring.datasource.driverClassName`,
 oltre alle tre precedenti.
 
-### Aggiungere un runner per visualizzare l'endpoint dell'applicazione
+### Visualizzare la URL per l'accesso all'applicazione durante lo startup
 Creare un package `config` nel package `it.unisa.tiziano.pdtify`.
 Nel package `config`, creare un file `StartupRunner.java` per la classe `StartupRunner` che
-implementa l'interfaccia `ApplicationRunner`. Il metodo `run` di questa classe verrà eseguito
-durante la fase di startup dell'applicazione e semplicemente aggiungerà un log 
-nella console con l'endpoint di ascolto.
+implementerà l'interfaccia `ApplicationRunner`.
+
+Il metodo `run` definito dall'interfaccia `ApplicationRunner` e implementato in `StartupRunner`
+verrà eseguito durante la fase di startup dell'applicazione e semplicemente aggiungerà un log 
+nella console con la URL per l'accesso all'applicazione.
 
 Aggiungere gli import necessari.
 ```java
@@ -74,6 +74,10 @@ import org.springframework.stereotype.Component;
 ```
 
 E implementare il metodo `run` definito dall'interfaccia `ApplicationRunner`.
+
+L'annotazione `@Slf4j` è fornita da `Lombok` e permette di ottenere un'interfaccia di logging
+senza configurarla esplicitamente.
+
 ```java
 @Slf4j
 @Component
@@ -86,16 +90,17 @@ public class StartupRunner implements ApplicationRunner {
 }
 ```
 
-L'annotazione `@Component` rende lo `StartupRunner` un bean che verrà gestito dall'application container
-di Spring e utilizzabile per la dependency injection.
+L'annotazione `@Component` segnala all'application container di creare e gestire un bean creato come istanza
+della classe `StartupRunner`.
 
 ### Avviare l'applicazione
 Assicurarsi che il database sia raggiungibile e avviare l'applicazione da terminale con il comando:
 ```bash
 mvn spring-boot:run
 ```
-E collegarsi all'endpoint locale [http://localhost:8080](http://localhost:8080).
-Ad ora non abbiamo ancora da visualizzare ma possiamo vedere nella console il log dello `StartupRunner`.
+E accedere all'applicazione alla URL [http://localhost:8080](http://localhost:8080).
+
+Non abbiamo ancora pagine da visualizzare ma possiamo vedere nella console il log dello `StartupRunner`.
 
 ![Startup Runner Log](https://github.com/tizianocitro/pdtify/blob/main/assets/StartupRunner.png)
 
