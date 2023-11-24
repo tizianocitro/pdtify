@@ -465,19 +465,21 @@ public String home(Model model) {
 
 ### Avviare l'applicazione
 Assicurarsi che il database sia raggiungibile e avviare l'applicazione da terminale con il comando:
+
 ```bash
 mvn spring-boot:run
 ```
 E controllare che alla URL [http://localhost:8080](http://localhost:8080) venga visualizzata la pagina Home.
 
-## Aggiungere la pagina per la visualizzazione delle canzoni
-La pagina Home permette di fare il play delle canzoni, per implementare questa funzionalità,
-aggiungiamo un nuovo endpoint nella classe `SongController`.
+## Aggiungere la pagina per il `play` delle canzoni
+La pagina Home permette di fare il play delle canzoni.
+Per implementare questa funzionalità, aggiungere un nuovo endpoint nella classe `SongController`.
 
-L'annotazione `GetMapping` indica che l'endpoint risponderà
-alle richieste GET all'URL [http://localhost:8080/play](http://localhost:8080/play).
+L'annotazione `GetMapping` indica che l'endpoint risponderà alle richieste GET alla URL [http://localhost:8080/play](http://localhost:8080/play).
 
-L'annotazione `@RequestParam` permette di specificare un query param per l'endpoint.
+L'annotazione `@RequestParam` permette di specificare un query param per l'endpoint,
+in questo caso il nome della canzone da riprodurre.
+
 ```java
 @GetMapping("/play")
 public String play(@RequestParam(value = "name") String name, Model model) {
@@ -487,7 +489,8 @@ public String play(@RequestParam(value = "name") String name, Model model) {
 }
 ```
 
-Aggiungiamo adesso la pagina per il play delle canzoni.
+Aggiungere adesso la pagina per il play delle canzoni,
+creando un file `play.html` nella directory `src/main/resources/templates`.
 
 ```html
 <!DOCTYPE html>
@@ -531,10 +534,11 @@ Assicurarsi che il database sia raggiungibile e avviare l'applicazione da termin
 ```bash
 mvn spring-boot:run
 ```
-E controllare che cliccando `play` su di una canzone, venga visualizzato l'embedding di Youtube.
+E controllare che cliccando `play` su di una canzone, venga visualizzata la pagina di play
+con il video di Youtube visualizzato in maniera embedded.
 
-## Aggiungere nuove canzoni
-La paginaa Home permette anche di aggiungere nuove canzoni, per fare ciò abiamo bisogno di altri
+## Aggiungere la pagine per l'aggiunta di nuove canzoni
+La pagina Home permette anche di aggiungere nuove canzoni. Per fare ciò c'è bisogno di altri
 due endpoint dedicati da aggiungere nella classe `SongController`.
 
 ```java
@@ -553,7 +557,51 @@ public String saveSong(@ModelAttribute Song song, Model model) {
 }
 ```
 
-Aggiungiamo adesso la pagina per il play delle canzoni.
+In conclusione, la classe `SongController` apparirà come segue:
+
+```java
+@Controller
+public class SongController {
+
+    private final SongService songService;
+
+    @Autowired
+    public SongController(SongService songService) {
+        this.songService = songService;
+    }
+
+    @GetMapping("")
+    public String home(Model model) {
+        List<Song> songs = songService.findAll();
+        model.addAttribute("songs", songs);
+        return "home";
+    }
+
+    @GetMapping("/play")
+    public String play(@RequestParam(value = "name") String name, Model model) {
+        Song song = songService.findByName(name);
+        model.addAttribute("song", song);
+        return "play";
+    }
+
+    @GetMapping("/add-song")
+    public String addSong(Model model) {
+        model.addAttribute("song", new Song());
+        return "addSong";
+    }
+
+    @PostMapping("/save-song")
+    public String saveSong(@ModelAttribute Song song, Model model) {
+        songService.save(song);
+        List<Song> songs = songService.findAll();
+        model.addAttribute("songs", songs);
+        return "home";
+    }
+}
+```
+
+Aggiungere adesso la pagina per l'aggiunta delle canzoni,
+creando un file `addSong.html` nella directory `src/main/resources/templates`.
 
 ```html
 <!DOCTYPE html>
@@ -604,12 +652,17 @@ Aggiungiamo adesso la pagina per il play delle canzoni.
 
 ### Avviare l'applicazione
 Assicurarsi che il database sia raggiungibile e avviare l'applicazione da terminale con il comando:
+
 ```bash
 mvn spring-boot:run
 ```
-E controllare che cliccando `Add` nella navbar, venga visualizzato il form per l'aggiunta di una canzone.
+E controllare che cliccando `Add` nella navbar della pagina Home,
+venga visualizzata la pagina con il form per l'aggiunta di una nuova canzone.
+
+Per inserire una nuova canzone sarà necessario specificare un nome, gli autori e il link dell'API di Youtube Embedded.
 
 Provare ad aggiungere la canzone seguente:
+
 ```json
 {
   "name": "Sweet Home Alabama",
@@ -618,50 +671,7 @@ Provare ad aggiungere la canzone seguente:
 }
 ```
 
-Controllare che nella Home appaia la canzone appena aggiunta.
-
-In conclusione, la classe `SongController` apparirà come segue:
-
-```java
-@Controller
-public class SongController {
-
-    private final SongService songService;
-
-    @Autowired
-    public SongController(SongService songService) {
-        this.songService = songService;
-    }
-
-    @GetMapping("")
-    public String home(Model model) {
-        List<Song> songs = songService.findAll();
-        model.addAttribute("songs", songs);
-        return "home";
-    }
-
-    @GetMapping("/play")
-    public String play(@RequestParam(value = "name") String name, Model model) {
-        Song song = songService.findByName(name);
-        model.addAttribute("song", song);
-        return "play";
-    }
-
-    @GetMapping("/add-song")
-    public String addSong(Model model) {
-        model.addAttribute("song", new Song());
-        return "addSong";
-    }
-
-    @PostMapping("/save-song")
-    public String saveSong(@ModelAttribute Song song, Model model) {
-        songService.save(song);
-        List<Song> songs = songService.findAll();
-        model.addAttribute("songs", songs);
-        return "home";
-    }
-}
-```
+E controllare che nella pagina Home appaia la canzone appena aggiunta.
 
 ## Aggiungiamo il conteggio del numero di visualizzazioni delle canzoni
 Implementeremo un filtro che intercetta le richieste all'endpoint `/play` per incrementare
