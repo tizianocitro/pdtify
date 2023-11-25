@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>PDtify</title>
+        <link
+                href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+                rel="stylesheet"
+                integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+                crossorigin="anonymous">
+    </head>
+    <body>
+        <nav class="navbar bg-primary">
+            <div class="container-fluid">
+                <a class="navbar-brand text-white" href="/">PDtify</a>
+                <form class="justify-content-end">
+                    <button class="btn btn-light" type="button">
+                        <a class="text-decoration-none" href="/add-song">Add</a>
+                    </button>
+                </form>
+            </div>
+        </nav>
+        <div class="container">
+            <div class="row" style="margin-top: 24px">
+                <div class="col-sm-4" th:each="song: ${songs}" style="margin-top: 12px">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-9">
+                                    <h5 class="card-title text-center text-capitalize fw-bold" th:text="${song.name}"/>
+                                    <p class="card-text text-center text-capitalize text-body-secondary" th:text="'By ' + ${song.authors}"/>
+                                    <p class="card-text text-center text-capitalize fw-semibold" th:text="${song.views} + ' views'"/>
+                                </div>
+                                <div class="col-3" style="margin-top: 24px">
+                                    <a th:href="'/play?name=' + ${song.name}" class="btn btn-lg btn-primary">Play</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
