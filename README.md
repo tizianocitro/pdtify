@@ -308,7 +308,7 @@ public interface SongService {
 }
 ```
 
-A questo punto, creare un file `SongServiceImp.java` per la classe che implementerà
+A questo punto, creare un file `SongServiceImpl.java` per la classe che implementerà
 l'interfaccia `SongService.java`.
 
 Aggiungiamo gli import necessari.
