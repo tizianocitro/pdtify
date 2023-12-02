@@ -3,6 +3,8 @@ Progetto in Spring Boot per la gestione di una playlist utilizzando come player 
 le API di Youtube Embedded nell'ambito del corso di Programmazione Distribuita 
 dell'Università degli Studi di Salerno.
 
+L'applicazione è ispirata dagli esercizi [07-lab-EJB](https://github.com/spagnuolocarmine/programmazione-distribuita/blob/22.23/07-lab-EJB/README.md).
+
 ## Screenshot dell'applicazione
 ### Pagina Home
 ![Home](https://github.com/tizianocitro/pdtify/blob/main/assets/Home.png)
