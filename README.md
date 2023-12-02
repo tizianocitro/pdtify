@@ -93,9 +93,10 @@ import org.springframework.stereotype.Component;
 E implementare il metodo `run` definito dall'interfaccia `ApplicationRunner`.
 
 L'annotazione `@Slf4j` è fornita da `Lombok` e permette di ottenere un'interfaccia di logging
-senza configurarla esplicitamente.
+senza configurarla esplicitamente, denominata `Simple Logging Facade for Java (SLF4J)`.
 
 ```java
+// Simple Logging Facade for Java (SLF4J)
 @Slf4j
 @Component
 public class StartupRunner implements ApplicationRunner {
