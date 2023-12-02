@@ -738,7 +738,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 ```
 
-E fare l'`ovverride` dei metodi forniti da `OncePerRequestFilter`.
+E fare l'`override` dei metodi forniti da `OncePerRequestFilter`.
 
 ```java
 @Slf4j
