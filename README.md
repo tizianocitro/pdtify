@@ -3,6 +3,16 @@ Progetto in Spring Boot per la gestione di una playlist utilizzando come player 
 le API di Youtube Embedded nell'ambito del corso di Programmazione Distribuita 
 dell'Università degli Studi di Salerno.
 
+L'applicazione è ispirata dagli esercizi [07-lab-EJB](https://github.com/spagnuolocarmine/programmazione-distribuita/blob/22.23/07-lab-EJB/README.md).
+
+## Recuperare facilmente il progetto
+Per recuperare facilmente il progetto, lo si può aggiungere a una lista su GitHub che
+sarà poi facilmente accessibile dal proprio profilo.
+
+Nell'esempio, si aggiunge il progetto a una lista chiamata `PD`, ma si può chiamarla come si preferisce.
+
+![Add project to list](https://github.com/tizianocitro/pdtify/blob/main/assets/StartProject.png)
+
 ## Screenshot dell'applicazione
 ### Pagina Home
 ![Home](https://github.com/tizianocitro/pdtify/blob/main/assets/Home.png)
@@ -93,9 +103,10 @@ import org.springframework.stereotype.Component;
 E implementare il metodo `run` definito dall'interfaccia `ApplicationRunner`.
 
 L'annotazione `@Slf4j` è fornita da `Lombok` e permette di ottenere un'interfaccia di logging
-senza configurarla esplicitamente.
+senza configurarla esplicitamente, denominata `Simple Logging Facade for Java (SLF4J)`.
 
 ```java
+// Simple Logging Facade for Java (SLF4J)
 @Slf4j
 @Component
 public class StartupRunner implements ApplicationRunner {
@@ -308,7 +319,7 @@ public interface SongService {
 }
 ```
 
-A questo punto, creare un file `SongServiceImp.java` per la classe che implementerà
+A questo punto, creare un file `SongServiceImpl.java` per la classe che implementerà
 l'interfaccia `SongService.java`.
 
 Aggiungiamo gli import necessari.
@@ -737,7 +748,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 ```
 
-E fare l'`ovverride` dei metodi forniti da `OncePerRequestFilter`.
+E fare l'`override` dei metodi forniti da `OncePerRequestFilter`.
 
 ```java
 @Slf4j
